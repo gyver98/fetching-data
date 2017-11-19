@@ -22,15 +22,29 @@ class App extends React.Component {
 
     // fires immediately after the initial render
     componentDidMount() {
-        if(!localStorage.getItem('contacts')) {
+
+        const date = localStorage.getItem('contactDate');
+        const contactsDate = date && new Date(parseInt(date));
+        const now = new Date();
+
+        const dataAge = Math.round((now - contactsDate) / (1000 * 60)); // in minutes
+        const tooOld = dataAge >= 1;
+
+        if(tooOld) {
             this.fetchData();
         } else {
-            console.log("fetching data from local storage");
+            console.log(`fetching data from local storage that are ${dataAge} mins old`);
         }
         
     }
 
     fetchData() {
+
+        this.setState({
+            isLoading: true,
+            contacts: []
+        })
+
         fetch('https://randomuser.me/api/?results=30&nat=us,dk,fr,gb')
         .then(response => response.json())
         .then(parsedJSON => parsedJSON.results.map(user => (
