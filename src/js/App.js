@@ -20,8 +20,14 @@ class App extends React.Component {
         })
     }
 
+    // fires immediately after the initial render
     componentDidMount() {
-        this.fetchData();
+        if(!localStorage.getItem('contacts')) {
+            this.fetchData();
+        } else {
+            console.log("fetching data from local storage");
+        }
+        
     }
 
     fetchData() {
@@ -42,6 +48,7 @@ class App extends React.Component {
         .catch(error => console.log(error))
     }
 
+    // fires immediately before rendering with new props or state
     componentWillUpdate(nextProps, nextState) {
         localStorage.setItem('contacts', JSON.stringify(nextState.contacts));
         localStorage.setItem('contactDate', Date.now());
