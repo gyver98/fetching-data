@@ -21,7 +21,7 @@ class App extends React.Component {
     }
 
     render() {
-        const {isLoading } = this.state;
+        const {isLoading, contacts } = this.state;
         return (
             <div>
                 <header>
@@ -30,15 +30,13 @@ class App extends React.Component {
                 </header>
                 <div className={`content ${isLoading ? 'is-loading': ''}`}>
                     <div className="panel-group">
-                        <Collapsible title="Tracy Palmer">
-                            <p>tracey.palmer@example.com<br />3280 manchester road, ely</p>
-                        </Collapsible>
-                        <Collapsible title="Jade Dupuis">
-                            <p>jade.dupuis@example.com<br />1803 rue pasteur, nanterre</p>
-                        </Collapsible>
-                        <Collapsible title="Alfred Olsen">
-                            <p>alfred.olsen@example.com<br />6598 fjordparken, hirtsals</p>
-                        </Collapsible>
+                        {
+                            !isLoading && contacts.length > 0 ? contacts.map(contact => {
+                                return <Collapsible title="Tracy Palmer">
+                                        <p>tracey.palmer@example.com<br />3280 manchester road, ely</p>
+                                       </Collapsible>
+                            }) : null
+                        }
                     </div>
                     <div className="loader">
                         <div className="icon"></div>
