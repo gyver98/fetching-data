@@ -17,14 +17,16 @@ class App extends React.Component {
     }
 
     fetchData() {
-        fetch('https://randomuser.me/api/?results=30')
+        fetch('https://randomuser.me/api/?results=30&nat=us,dk,fr,gb')
         .then(response => response.json())
-        .then(parsedJSON => parsedJSON.results.map(user => {
-            name: `${user.name.first} ${user.name.last}`,
-            username: `${user.login.username}`,
-            email: `${user.email}`,
-            location: `${user.location.street}, ${user.location.city}`
-        }))
+        .then(parsedJSON => parsedJSON.results.map(user => (
+            {
+                name: `${user.name.first} ${user.name.last}`,
+                username: `${user.login.username}`,
+                email: `${user.email}`,
+                location: `${user.location.street}, ${user.location.city}`
+            }
+        )))
         .then(contacts => this.setState({
             contacts,
             isLoading: false
@@ -44,8 +46,9 @@ class App extends React.Component {
                     <div className="panel-group">
                         {
                             !isLoading && contacts.length > 0 ? contacts.map(contact => {
-                                return <Collapsible title="Tracy Palmer">
-                                        <p>tracey.palmer@example.com<br />3280 manchester road, ely</p>
+                                const {name, username, email, location} = contact;
+                                return <Collapsible title={name} key={username}>
+                                        <p>{email}<br />{location}</p>
                                        </Collapsible>
                             }) : null
                         }
