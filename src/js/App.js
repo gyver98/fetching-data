@@ -17,7 +17,10 @@ class App extends React.Component {
     }
 
     fetchData() {
-
+        fetch('https://randomuser.me/api/?results=30')
+        .then(response => response.json())
+        .then(parsedJSON => console.log(parsedJSON.results))
+        .catch(error => console.log(error))
     }
 
     render() {
