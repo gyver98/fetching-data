@@ -19,7 +19,16 @@ class App extends React.Component {
     fetchData() {
         fetch('https://randomuser.me/api/?results=30')
         .then(response => response.json())
-        .then(parsedJSON => console.log(parsedJSON.results))
+        .then(parsedJSON => parsedJSON.results.map(user => {
+            name: `${user.name.first} ${user.name.last}`,
+            username: `${user.login.username}`,
+            email: `${user.email}`,
+            location: `${user.location.street}, ${user.location.city}`
+        }))
+        .then(contacts => this.setState({
+            contacts,
+            isLoading: false
+        }))
         .catch(error => console.log(error))
     }
 
